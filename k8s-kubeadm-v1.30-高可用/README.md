@@ -7,6 +7,7 @@
 | Master2 | Rocky9.4 | 2H2G | node2   | 192.16.100.129/24 | k8s_master + nginx + keepalived |
 | Master3 | Rocky9.4 | 2H2G | node3   | 192.16.100.130/24 | k8s_master + nginx + keepalived |
 | VIP     | 无       | 无   | k8s.vip | 192.16.100.131/24 | keepalived                      |
+
 ![本文拓扑](./image/k8s_api-server高可用.png)
 ![推荐拓扑](./image/k8s_api-server高可用-推荐.png)
 # 初始化节点
