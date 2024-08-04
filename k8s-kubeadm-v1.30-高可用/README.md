@@ -20,6 +20,9 @@ swapoff -a
 sed -i '/\sswap\s/s/^/#/' /etc/fstab
 # 添加内核参数
 modprobe br_netfilter
+cat > /etc/modules-load.d/k8s.conf <<EOF
+br_netfilter
+EOF
 cat > /etc/sysctl.d/k8s.conf <<EOF
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
