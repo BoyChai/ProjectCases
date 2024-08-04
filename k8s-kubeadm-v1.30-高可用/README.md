@@ -14,11 +14,24 @@
 默认节点应该做到已经配好静态ip和配置好主机名的互通，学习环境中更简易修改hosts文件、生产环境中更建议通过DNS服务统一管理主机名。三台主机统一进行以下操作(下面内容可以直接粘贴到主机中)
 ```bash
 # 安装基础软件包
-yum install -y device-mapper-persistent-data lvm2 wget net-tools nfs-utils lrzsz gcc gcc-c++ make cmake libxml2-devel openssl-devel curl curl-devel unzip sudo chrony libaio-devel vim ncurses-devel autoconf automake zlib-devel python-devel epel-release openssh-server socat ipvsadm conntrack telnet git yum-utils
+yum install -y device-mapper-persistent-data lvm2 wget net-tools nfs-utils lrzsz gcc gcc-c++ make cmake libxml2-devel openssl-devel curl curl-devel unzip sudo chrony libaio-devel vim ncurses-devel autoconf automake zlib-devel python-devel epel-release openssh-server socat ipset ipvsadm conntrack telnet git yum-utils
 # 关闭swap分区
 swapoff -a
 sed -i '/\sswap\s/s/^/#/' /etc/fstab
 # 添加内核参数
+# ipvs
+mkdir /etc/sysconfig/modules/
+cat > /etc/sysconfig/modules/ipvs.modules <<EOF
+#!/bin/bash
+modprobe -- ip_vs
+modprobe -- ip_vs_rr
+modprobe -- ip_vs_wrr
+modprobe -- ip_vs_sh
+modprobe -- nf_conntrack
+EOF
+chmod +x /etc/sysconfig/modules/ipvs.modules
+/bin/bash /etc/sysconfig/modules/ipvs.modules
+# netfilter
 modprobe br_netfilter
 cat > /etc/modules-load.d/k8s.conf <<EOF
 br_netfilter
